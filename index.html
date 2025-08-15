@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Fade In from Top</title>
+<style>
+
+    :root {
+        --BG: black; /* background color */
+        --FG: white; /* foreground color */
+    }
+
+    body {
+        background-color: var(--BG);
+        color: var(--FG);
+        font-family: 'Pixelify Sans', sans-serif;
+
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        height: 50vh;
+        margin: 0;
+        text-align: center;
+        position: relative; /* needed for top-right button */
+    }
+    
+    .fade-in-topMAIN {
+        font-size: 100px;
+        opacity: 0;
+        transform: translateY(-10px);
+        animation: fadeInTop 1.5s ease-out forwards;
+    }
+
+    .fade-in-topMAIN.delay {
+        animation-delay: 1s;
+    }
+
+    .fade-in-topMAIN.small {
+        font-size: 50px;
+    }
+
+    .fade-in-topMAIN.delay2 {
+        animation-delay: 2s;
+    }
+
+    p, button {
+        margin: 0;
+        margin-top: 0;
+    }
+
+    .button-row {
+        display: flex;
+        gap: 50px;
+        margin-top: 40px;
+    }
+
+    .button-row button {
+        padding: 20px 40px;
+        font-size: 30px;
+        border-radius: 10px;
+        background-color: var(--FG);
+        color: var(--BG);
+        font-family: 'Pixelify Sans', sans-serif;
+        cursor: pointer;
+    }
+
+    .button-row button:hover {
+        transform: scale(1.2); /* Increase size by 20% */
+        transition: transform 0.2s ease; /* Smooth animation */
+    }
+
+    /* Light/Dark mode toggle button */
+    #toggleMode {
+        position: absolute;
+        top: 20px;
+        right: 20px;
+        padding: 10px 20px;
+        font-size: 18px;
+        border-radius: 8px;
+        background-color: var(--BG);
+        color: var(--FG);
+        border: 2px solid var(--FG);
+        cursor: pointer;
+    }
+
+    @keyframes fadeInTop {
+        0% {
+            opacity: 0;
+            transform: translateY(-200px);
+        }
+        100% {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+</style>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<button id="toggleMode" style="font-family: 'Pixelify Sans', sans-serif;">Dark/Light</button>
+
+<p class="fade-in-topMAIN first">Learn to code</p>
+<p class="fade-in-topMAIN delay">Build amazing things</p>
+<p class="fade-in-topMAIN small delay2">What do you want to learn?</p>
+
+<div class="fade-in-topMAIN delay2 button-row">
+    <button>Scratch</button>
+    <button>HTML</button>
+    <button>C</button>
+</div>
+
+<script>
+    const toggleBtn = document.getElementById('toggleMode');
+
+    toggleBtn.addEventListener('click', () => {
+        // Get current root colors
+        const root = document.documentElement;
+        const bg = getComputedStyle(root).getPropertyValue('--BG').trim();
+        const fg = getComputedStyle(root).getPropertyValue('--FG').trim();
+
+        // Swap them
+        root.style.setProperty('--BG', fg);
+        root.style.setProperty('--FG', bg);
+    });
+</script>
+
+</body>
+</html>
