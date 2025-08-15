@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML Live Simulator</title>
+<style>
+    body {
+        margin: 0;
+        height: 100vh;
+        display: flex;
+        font-family: sans-serif;
+    }
+    textarea {
+        width: 50%;
+        height: 100%;
+        padding: 10px;
+        border: none;
+        resize: none;
+        font-family: monospace;
+        font-size: 14px;
+        outline: none;
+        background: #1e1e1e;
+        color: #ffffff;
+    }
+    iframe {
+        width: 50%;
+        height: 100%;
+        border: none;
+        background: white;
+    }
+</style>
+</head>
+<body>
+
+<textarea id="htmlCode" placeholder="Type your HTML here...">
+<h1>Hello World</h1>
+<p>This is live preview HTML!</p>
+</textarea>
+
+<iframe id="output"></iframe>
+
+<script>
+    const textarea = document.getElementById("htmlCode");
+    const output = document.getElementById("output");
+
+    function updateOutput() {
+        output.srcdoc = textarea.value;
+    }
+
+    textarea.addEventListener("input", updateOutput);
+
+    // Initialize with default content
+    updateOutput();
+</script>
+
+</body>
+</html>
