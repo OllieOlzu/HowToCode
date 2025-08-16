@@ -3,100 +3,98 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Fade In from Top</title>
+<title>HTML Fly In/Out Example</title>
 <style>
+:root {
+    --BG: black;
+    --FG: white;
+}
 
-    :root {
-        --BG: black; /* background color */
-        --FG: white; /* foreground color */
-    }
+body {
+    overflow: hidden;
+    transition: background-color 1s, color 1s;
+    background-color: var(--BG);
+    color: var(--FG);
+    font-family: 'Pixelify Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    position: relative;
+}
 
-    body {
-        transition: background-color 1s, color 1s;
-        background-color: var(--BG);
-        color: var(--FG);
-        font-family: 'Pixelify Sans', sans-serif;
+/* Stationary elements */
+.small-text {
+    font-size: 50px;
+    margin-bottom: 20px;
+}
 
-        display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center;
-        height: 50vh;
-        margin: 0;
-        text-align: center;
-        position: relative; /* needed for top-right button */
-    }
-    
-    .fade-in-topMAIN {
-        font-size: 100px;
-        opacity: 0;
-        transform: translateY(-10px);
-        animation: fadeInTop 1.5s ease-out forwards;
-    }
+.NextButton button {
+    padding: 20px;
+    font-size: 60px;
+    border-radius: 10px;
+    background-color: var(--FG);
+    color: var(--BG);
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
 
-    .fade-in-topMAIN.delay {
-        animation-delay: 1s;
-    }
+.button-row button {
+    padding: 20px;
+    font-size: 15px;
+    border-radius: 10px;
+    background-color: var(--FG);
+    color: var(--BG);
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
 
-    .fade-in-topMAIN.small {
-        font-size: 50px;
-    }
+.button-row button:hover, .NextButton button:hover {
+    transform: scale(1.2);
+}
 
-    .fade-in-topMAIN.delay2 {
-        animation-delay: 2s;
-    }
+#toggleMode {
+    position: absolute;
+    top: 20px;
+    right: 20px;
+    padding: 10px 20px;
+    font-size: 18px;
+    border-radius: 8px;
+    background-color: var(--BG);
+    color: var(--FG);
+    border: 2px solid var(--FG);
+    cursor: pointer;
+}
 
-    p, button {
-        margin: 0;
-        margin-top: 0;
-    }
+/* Paragraph that flies in/out */
+.fly-text {
+    font-size: 70px;
+    opacity: 0;
+    transform: translateX(-200px);
+}
 
-    .button-row {
-        display: flex;
-        gap: 50px;
-        margin-top: 40px;
-    }
+/* Fly in animation */
+@keyframes flyIn {
+    0% { opacity: 0; transform: translateX(-200px); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+.fly-in {
+    animation: flyIn 1.5s ease-out forwards;
+}
 
-    .button-row button {
-        padding: 20px 40px;
-        font-size: 30px;
-        border-radius: 10px;
-        background-color: var(--FG);
-        color: var(--BG);
-        font-family: 'Pixelify Sans', sans-serif;
-        cursor: pointer;
-    }
-
-    .button-row button:hover {
-        transform: scale(1.2); /* Increase size by 20% */
-        transition: transform 0.2s ease; /* Smooth animation */
-    }
-
-    /* Light/Dark mode toggle button */
-    #toggleMode {
-        position: absolute;
-        top: 20px;
-        right: 20px;
-        padding: 10px 20px;
-        font-size: 18px;
-        border-radius: 8px;
-        background-color: var(--BG);
-        color: var(--FG);
-        border: 2px solid var(--FG);
-        cursor: pointer;
-    }
-
-    @keyframes fadeInTop {
-        0% {
-            opacity: 0;
-            transform: translateY(-200px);
-        }
-        100% {
-            opacity: 1;
-            transform: translateY(0);
-        }
-    }
-
+/* Fly out animation */
+@keyframes flyOutRight {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(100px); opacity: 0; }
+}
+.fly-out {
+    animation: flyOutRight 1s forwards;
+}
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -104,54 +102,78 @@
 </head>
 <body>
 
-<button id="toggleMode" style="font-family: 'Pixelify Sans', sans-serif;">Dark/Light</button>
+<button id="toggleMode">Dark/Light</button>
 
-<p class="fade-in-topMAIN first">Learn to code</p>
-<p class="fade-in-topMAIN delay">Build amazing things</p>
-<p class="fade-in-topMAIN small delay2">What do you want to learn?</p>
+<p class="small-text">Take notes!</p>
+<p id="mainText" class="fly-text first">HTML is what websites are made of. HTML code is made of sections, each one playing their part in the web page.</p>
 
-<div class="fade-in-topMAIN delay2 button-row">
-    <button>Scratch</button>
-    <button id="HTML">HTML</button>
-    <button>C</button>
+<div class="NextButton">
+    <button>Next</button>
+</div>
+
+<br><br><br>
+
+<div class="button-row">
+    <button id="Basics">Basics</button>
 </div>
 
 <script>
-    // Set default theme if none stored
-    if (!localStorage.getItem("theme")) {
-        localStorage.setItem("theme", "dark");
-    }
+document.getElementById("mainText").textContent = localStorage.getItem("step");
+const toggleBtn = document.getElementById('toggleMode');
+const BasicsBtn = document.getElementById('Basics');
+const firstText = document.querySelector('.first');
+const nextBtn = document.querySelector('.NextButton button');
 
-    const toggleBtn = document.getElementById('toggleMode');
-    const HTMLBtn = document.getElementById('HTML');
-    const root = document.documentElement;
+// Dark/Light mode toggle
+if (!localStorage.getItem("theme")) {
+    localStorage.setItem("theme", "dark");
+}
 
-    toggleBtn.addEventListener('click', () => {
-        if (localStorage.getItem("theme") === "dark") {
-            localStorage.setItem("theme", "light");
+const root = document.documentElement;
 
-            root.style.setProperty('--BG', 'white');
-            root.style.setProperty('--FG', 'black');
-        } else {
-            localStorage.setItem("theme", "dark");
-
-            root.style.setProperty('--BG', 'black');
-            root.style.setProperty('--FG', 'white');
-        }
-    });
-
-    HTMLBtn.addEventListener('click', () => {
-        window.location.href = "https://example.com";
-    });
-
-    // Apply stored theme on page load
+toggleBtn.addEventListener('click', () => {
     if (localStorage.getItem("theme") === "dark") {
-        root.style.setProperty('--BG', 'black');
-        root.style.setProperty('--FG', 'white');
-    } else {
+        localStorage.setItem("theme", "light");
+
         root.style.setProperty('--BG', 'white');
         root.style.setProperty('--FG', 'black');
+    } else {
+        localStorage.setItem("theme", "dark");
+
+        root.style.setProperty('--BG', 'black');
+        root.style.setProperty('--FG', 'white');
     }
+});
+
+BasicsBtn.addEventListener('click', () => {
+    localStorage.setItem("step", 1);
+    location.reload();
+});
+
+    // Apply stored theme on page load
+if (localStorage.getItem("theme") === "dark") {
+    root.style.setProperty('--BG', 'black');
+    root.style.setProperty('--FG', 'white');
+} else {
+    root.style.setProperty('--BG', 'white');
+    root.style.setProperty('--FG', 'black');
+}
+
+// Fly in on page load
+window.addEventListener('load', () => {
+    firstText.classList.add('fly-in');
+});
+
+// Fly out on Next button click
+nextBtn.addEventListener('click', () => {
+    firstText.classList.remove('fly-in'); // optional: remove fly-in to prevent conflicts
+    firstText.classList.add('fly-out');
+
+    setTimeout(() => {
+        location.reload();
+        localStorage.setItem("step", Number(localStorage.getItem("step")) + 1);
+    }, 1000); // 1000ms = 1 second
+});
 </script>
 
 </body>
