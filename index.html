@@ -12,6 +12,7 @@
     }
 
     body {
+        transition: background-color 1s, color 1s;
         background-color: var(--BG);
         color: var(--FG);
         font-family: 'Pixelify Sans', sans-serif;
@@ -95,6 +96,7 @@
             transform: translateY(0);
         }
     }
+
 </style>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -110,23 +112,46 @@
 
 <div class="fade-in-topMAIN delay2 button-row">
     <button>Scratch</button>
-    <button>HTML</button>
+    <button id="HTML">HTML</button>
     <button>C</button>
 </div>
 
 <script>
+    // Set default theme if none stored
+    if (!localStorage.getItem("theme")) {
+        localStorage.setItem("theme", "dark");
+    }
+
     const toggleBtn = document.getElementById('toggleMode');
+    const HTMLBtn = document.getElementById('HTML');
+    const root = document.documentElement;
 
     toggleBtn.addEventListener('click', () => {
-        // Get current root colors
-        const root = document.documentElement;
-        const bg = getComputedStyle(root).getPropertyValue('--BG').trim();
-        const fg = getComputedStyle(root).getPropertyValue('--FG').trim();
+        if (localStorage.getItem("theme") === "dark") {
+            localStorage.setItem("theme", "light");
 
-        // Swap them
-        root.style.setProperty('--BG', fg);
-        root.style.setProperty('--FG', bg);
+            root.style.setProperty('--BG', 'white');
+            root.style.setProperty('--FG', 'black');
+        } else {
+            localStorage.setItem("theme", "dark");
+
+            root.style.setProperty('--BG', 'black');
+            root.style.setProperty('--FG', 'white');
+        }
     });
+
+    HTMLBtn.addEventListener('click', () => {
+        window.location.href = "https://example.com";
+    });
+
+    // Apply stored theme on page load
+    if (localStorage.getItem("theme") === "dark") {
+        root.style.setProperty('--BG', 'black');
+        root.style.setProperty('--FG', 'white');
+    } else {
+        root.style.setProperty('--BG', 'white');
+        root.style.setProperty('--FG', 'black');
+    }
 </script>
 
 </body>
