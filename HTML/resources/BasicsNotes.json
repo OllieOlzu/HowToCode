@@ -1,10 +1,16 @@
 {
   "text": [
-    "HTML is what websites are made of.",
-    "Each section has a specific role."
+    "HTML is the main coding languige of websites, including this one!",
+    "HTML is made of diffrent sections, each one with there own purpose.",
+    "The program allways starts off with <!DOCTYPE html>, this tells the browser that it is HTML.",
+    "Each section opens with <SECTION TYPE> and closes with </SECTION TYPE>",
+    "Here is one such egsample:"
   ],
   "images": [
-    "https://www.google.com/url?sa=i&url=https%3A%2F%2Fwww.collinsdictionary.com%2Fdictionary%2Fenglish%2Fapple&psig=AOvVaw2ALl1FI5TtyZq-uf3Hmk-4&ust=1755481264225000&source=images&cd=vfe&opi=89978449&ved=0CBUQjRxqFwoTCMib9bnbkI8DFQAAAAAdAAAAABAE",
-    "https://yt3.googleusercontent.com/s5hlNKKDDQWjFGzYNnh8UeOW2j2w6id-cZGx7GdAA3d5Fu7zEi7ZMXEyslysuQUKigXNxtAB=s900-c-k-c0x00ffffff-no-rj"
+    "",
+    "",
+    "",
+    "",
+    ""
   ]
 }
