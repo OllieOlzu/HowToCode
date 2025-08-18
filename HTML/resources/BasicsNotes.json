@@ -1,8 +1,8 @@
 {
   "text": [
     "HTML is the main coding languige of websites, including this one!",
-    "HTML is made of diffrent sections, each one with there own purpose.",
     "The program allways starts off with <!DOCTYPE html>, this tells the browser that it is HTML.",
+    "HTML is made of diffrent sections, each one with there own purpose.",
     "Each section opens with <SECTION TYPE> and closes with </SECTION TYPE>",
     "Here is one such egsample:"
   ],
