@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>HTML: Basics</title>
+<style>
+:root {
+    --BG: black;
+    --FG: white;
+}
+
+body {
+    overflow: hidden;
+    transition: background-color 1s, color 1s;
+    background-color: var(--BG);
+    color: var(--FG);
+    font-family: 'Pixelify Sans', sans-serif;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+    text-align: center;
+    position: relative;
+}
+
+/* Stationary elements */
+.small-text {
+    font-size: clamp(2vw, 5vh, 5vw);
+    margin-bottom: 10vh;
+}
+
+.NextButton button {
+    margin-top: 5vh;
+    padding: 2vh 4vw;
+    font-size: clamp(2vw, 4vh, 4vw);
+    border-radius: 1vh;
+    background-color: var(--FG);
+    color: var(--BG);
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.button-row button {
+    margin-top: 5vh;
+    padding: 1.5vh 3vw;
+    font-size: clamp(1vw, 2vh, 2vw);
+    border-radius: 1vh;
+    background-color: var(--FG);
+    color: var(--BG);
+    font-family: 'Pixelify Sans', sans-serif;
+    cursor: pointer;
+    transition: transform 0.2s ease;
+}
+
+.button-row button:hover, .NextButton button:hover {
+    transform: scale(1.2);
+}
+
+#toggleMode {
+    position: absolute;
+    top: 2vh;
+    right: 2vw;
+    padding: 1vh 2vw;
+    font-size: clamp(1vw, 2vh, 2vw);
+    border-radius: 1vh;
+    background-color: var(--BG);
+    color: var(--FG);
+    border: 0.3vh solid var(--FG);
+    cursor: pointer;
+}
+
+/* Paragraph that flies in/out */
+.fly-text {
+    font-size: clamp(3vw, 6vh, 6vw);
+    opacity: 0;
+    transform: translateX(-20vw);
+}
+
+/* Fly in animation */
+@keyframes flyIn {
+    0% { opacity: 0; transform: translateX(-20vw); }
+    100% { opacity: 1; transform: translateX(0); }
+}
+.fly-in {
+    animation: flyIn 1.5s ease-out forwards;
+}
+
+/* Fly out animation */
+@keyframes flyOutRight {
+    0% { transform: translateX(0); opacity: 1; }
+    100% { transform: translateX(20vw); opacity: 0; }
+}
+.fly-out {
+    animation: flyOutRight 1s forwards;
+}
+
+.small-text, .fly-text {
+    margin-top: 5vh;
+    margin: 0;
+}
+
+/* Fullscreen image modal */
+#imageModal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+/* The big image inside the modal */
+#imageModal img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 1vh;
+}
+
+/* Small image on page */
+#mainImage {
+    margin-top: 3vh;
+    max-height: 40vh;   
+    max-width: 80vw;
+    height: auto;  
+    width: auto;  
+    outline: none;
+    cursor: pointer; /* shows it's clickable */
+}
+
+</style>
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
+</head>
+<body>
+
+<button id="toggleMode">Dark/Light</button>
+
+<p class="small-text">Take notes!</p>
+
+<br>
+
+<p id="mainText" class="fly-text first"></p>
+
+<div class="NextButton">
+    <button id="1" onclick="next()"></button>
+    <button id="2" onclick="next()"></button>
+    <button id="3" onclick="next()"></button>
+</div>
+
+<div class="button-row">
+    <button id="Basics">Basics</button>
+</div>
+
+<script>
+let dataArray = [];
+let imageArray = [];
+
+if (!localStorage.getItem("BCstep")) {
+    localStorage.setItem("BCstep", "0");
+}
+
+let FB, SB, TB, correct, BCstep;
+
+fetch('https://ollieolzu.github.io/HowToCode/HTML/resources/BasicsChoises.json')
+  .then(res => res.json())
+  .then(data => {
+    dataArray = data.text;
+    correct = data.correct;
+    f = data.f;
+    s = data.s;
+    t = data.t;
+
+    BCstep = Number(localStorage.getItem("BCstep"));
+    FB = document.getElementById('1');
+    SB = document.getElementById('2');
+    TB = document.getElementById('3');
+    document.getElementById("mainText").textContent = dataArray[BCstep];
+
+    FB.textContent = f[BCstep];
+    SB.textContent = s[BCstep];
+    TB.textContent = t[BCstep];
+});
+
+const toggleBtn = document.getElementById('toggleMode');
+const BasicsBtn = document.getElementById('Basics');
+const firstText = document.querySelector('.first');
+
+// Dark/Light mode toggle
+if (!localStorage.getItem("theme")) {
+    localStorage.setItem("theme", "dark");
+}
+
+const root = document.documentElement;
+
+toggleBtn.addEventListener('click', () => {
+    if (localStorage.getItem("theme") === "dark") {
+        localStorage.setItem("theme", "light");
+
+        root.style.setProperty('--BG', 'white');
+        root.style.setProperty('--FG', 'black');
+    } else {
+        localStorage.setItem("theme", "dark");
+
+        root.style.setProperty('--BG', 'black');
+        root.style.setProperty('--FG', 'white');
+    }
+});
+
+BasicsBtn.addEventListener('click', () => {
+    localStorage.setItem("BCstep", 0);
+    location.reload();
+});
+
+// Apply stored theme on page load
+if (localStorage.getItem("theme") === "dark") {
+    root.style.setProperty('--BG', 'black');
+    root.style.setProperty('--FG', 'white');
+} else {
+    root.style.setProperty('--BG', 'white');
+    root.style.setProperty('--FG', 'black');
+}
+
+// Fly in on page load
+window.addEventListener('load', () => {
+    firstText.classList.add('fly-in');
+});
+
+function next() {
+    FB.style.backgroundColor = "red";
+    SB.style.backgroundColor = "red";
+    TB.style.backgroundColor = "red";
+
+    if (correct[BCstep] === "1") {
+        FB.style.backgroundColor = "green";
+        }
+
+    if (correct[BCstep] === "2") {
+        SB.style.backgroundColor = "green";
+        }
+
+    if (correct[BCstep] === "3") {
+        TB.style.backgroundColor = "green";
+    }
+
+    setTimeout(() => {
+        firstText.classList.remove('fly-in');
+        firstText.classList.add('fly-out');
+
+        setTimeout(() => {
+            localStorage.setItem("BCstep", Number(localStorage.getItem("BCstep")) + 1);
+            location.reload();
+        }, 1000);
+    }, 1000);
+    
+};
+</script>
+
+</body>
+</html>
