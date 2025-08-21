@@ -185,6 +185,7 @@ fetch('https://ollieolzu.github.io/HowToCode/HTML/resources/BasicsNotes.json')
 
     if (BNstep > dataArray.length) {
         window.location.href = "https://ollieolzu.github.io/HowToCode/HTML/BasicsChoises";
+        localStorage.setItem("BCstep", "0");
     }
 
     document.getElementById("mainText").textContent = dataArray[BNstep];
