@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>HTML Fly In/Out Example</title>
+<title>HTML: Basics</title>
 <style>
 :root {
     --BG: black;
@@ -28,14 +28,15 @@ body {
 
 /* Stationary elements */
 .small-text {
-    font-size: 50px;
-    margin-bottom: 20px;
+    font-size: clamp(2vw, 5vh, 5vw);
+    margin-bottom: 10vh;
 }
 
 .NextButton button {
-    padding: 20px;
-    font-size: 60px;
-    border-radius: 10px;
+    margin-top: 5vh;
+    padding: 2vh 4vw;
+    font-size: clamp(2vw, 4vh, 4vw);
+    border-radius: 1vh;
     background-color: var(--FG);
     color: var(--BG);
     font-family: 'Pixelify Sans', sans-serif;
@@ -44,9 +45,10 @@ body {
 }
 
 .button-row button {
-    padding: 20px;
-    font-size: 15px;
-    border-radius: 10px;
+    margin-top: 5vh;
+    padding: 1.5vh 3vw;
+    font-size: clamp(1vw, 2vh, 2vw);
+    border-radius: 1vh;
     background-color: var(--FG);
     color: var(--BG);
     font-family: 'Pixelify Sans', sans-serif;
@@ -60,27 +62,27 @@ body {
 
 #toggleMode {
     position: absolute;
-    top: 20px;
-    right: 20px;
-    padding: 10px 20px;
-    font-size: 18px;
-    border-radius: 8px;
+    top: 2vh;
+    right: 2vw;
+    padding: 1vh 2vw;
+    font-size: clamp(1vw, 2vh, 2vw);
+    border-radius: 1vh;
     background-color: var(--BG);
     color: var(--FG);
-    border: 2px solid var(--FG);
+    border: 0.3vh solid var(--FG);
     cursor: pointer;
 }
 
 /* Paragraph that flies in/out */
 .fly-text {
-    font-size: 70px;
+    font-size: clamp(3vw, 6vh, 6vw);
     opacity: 0;
-    transform: translateX(-200px);
+    transform: translateX(-20vw);
 }
 
 /* Fly in animation */
 @keyframes flyIn {
-    0% { opacity: 0; transform: translateX(-200px); }
+    0% { opacity: 0; transform: translateX(-20vw); }
     100% { opacity: 1; transform: translateX(0); }
 }
 .fly-in {
@@ -90,12 +92,51 @@ body {
 /* Fly out animation */
 @keyframes flyOutRight {
     0% { transform: translateX(0); opacity: 1; }
-    100% { transform: translateX(100px); opacity: 0; }
+    100% { transform: translateX(20vw); opacity: 0; }
 }
 .fly-out {
     animation: flyOutRight 1s forwards;
 }
+
+.small-text, .fly-text {
+    margin-top: 5vh;
+    margin: 0;
+}
+
+/* Fullscreen image modal */
+#imageModal {
+    display: none; 
+    position: fixed;
+    z-index: 1000;
+    left: 0;
+    top: 0;
+    width: 100vw;
+    height: 100vh;
+    background-color: rgba(0,0,0,0.9);
+    justify-content: center;
+    align-items: center;
+}
+
+/* The big image inside the modal */
+#imageModal img {
+    max-width: 90vw;
+    max-height: 90vh;
+    border-radius: 1vh;
+}
+
+/* Small image on page */
+#mainImage {
+    margin-top: 3vh;
+    max-height: 40vh;   
+    max-width: 80vw;
+    height: auto;  
+    width: auto;  
+    outline: none;
+    cursor: pointer; /* shows it's clickable */
+}
+
 </style>
+
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Pixelify+Sans&display=swap" rel="stylesheet">
@@ -105,20 +146,58 @@ body {
 <button id="toggleMode">Dark/Light</button>
 
 <p class="small-text">Take notes!</p>
-<p id="mainText" class="fly-text first">HTML is what websites are made of. HTML code is made of sections, each one playing their part in the web page.</p>
+
+<br>
+
+<p id="mainText" class="fly-text first"></p>
+
+<img id="mainImage" src="" alt="Illustration" style="cursor:pointer;">
+
+<!-- Modal for fullscreen image -->
+<div id="imageModal">
+    <span id="closeModal" style="position:absolute;top:2vh;right:2vw;font-size:5vh;color:white;cursor:pointer;">&times;</span>
+    <img id="modalImage" src="">
+</div>
 
 <div class="NextButton">
     <button>Next</button>
 </div>
-
-<br><br><br>
 
 <div class="button-row">
     <button id="Basics">Basics</button>
 </div>
 
 <script>
-document.getElementById("mainText").textContent = localStorage.getItem("step");
+let dataArray = [];
+let imageArray = [];
+
+if (!localStorage.getItem("BNstep")) {
+    localStorage.setItem("BNstep", "0");
+}
+
+fetch('https://ollieolzu.github.io/HowToCode/HTML/resources/BasicsNotes.json')
+  .then(res => res.json())
+  .then(data => {
+    dataArray = data.text;
+    imageArray = data.images;
+
+    const BNstep = Number(localStorage.getItem("BNstep"));
+
+    if (BNstep > dataArray.length) {
+        window.location.href = "https://example.com";
+    }
+
+    document.getElementById("mainText").textContent = dataArray[BNstep];
+
+    const mainImage = document.getElementById('mainImage');
+    if (imageArray[BNstep] && imageArray[BNstep].trim() !== "") {
+      mainImage.src = imageArray[BNstep];
+      mainImage.style.display = "block";
+    } else {
+      mainImage.style.display = "none";
+    }
+});
+
 const toggleBtn = document.getElementById('toggleMode');
 const BasicsBtn = document.getElementById('Basics');
 const firstText = document.querySelector('.first');
@@ -146,11 +225,11 @@ toggleBtn.addEventListener('click', () => {
 });
 
 BasicsBtn.addEventListener('click', () => {
-    localStorage.setItem("step", 1);
+    localStorage.setItem("BNstep", 0);
     location.reload();
 });
 
-    // Apply stored theme on page load
+// Apply stored theme on page load
 if (localStorage.getItem("theme") === "dark") {
     root.style.setProperty('--BG', 'black');
     root.style.setProperty('--FG', 'white');
@@ -166,13 +245,36 @@ window.addEventListener('load', () => {
 
 // Fly out on Next button click
 nextBtn.addEventListener('click', () => {
-    firstText.classList.remove('fly-in'); // optional: remove fly-in to prevent conflicts
+    firstText.classList.remove('fly-in');
     firstText.classList.add('fly-out');
 
     setTimeout(() => {
+        localStorage.setItem("BNstep", Number(localStorage.getItem("BNstep")) + 1);
         location.reload();
-        localStorage.setItem("step", Number(localStorage.getItem("step")) + 1);
-    }, 1000); // 1000ms = 1 second
+    }, 1000);
+});
+
+const mainImage = document.getElementById("mainImage");
+const modal = document.getElementById("imageModal");
+const modalImage = document.getElementById("modalImage");
+const closeModal = document.getElementById("closeModal");
+
+// Open modal when image clicked
+mainImage.addEventListener("click", () => {
+    modal.style.display = "flex";
+    modalImage.src = mainImage.src;
+});
+
+// Close modal when X clicked
+closeModal.addEventListener("click", () => {
+    modal.style.display = "none";
+});
+
+// Close modal when background clicked
+modal.addEventListener("click", (e) => {
+    if (e.target === modal) {
+        modal.style.display = "none";
+    }
 });
 </script>
 
